@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Year;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -59,13 +61,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByName(String name) {
-        User userName = mongoTemplate.findOne(Query.query(Criteria.where("userName").is(name)), User.class);
-        return userName;
+        User user = mongoTemplate.findOne(Query.query(Criteria.where("userName").is(name)), User.class);
+        return user;
     }
 
     @Override
-    public String login(String username, String password) {
-        String token = null;
+    public Map login(String username, String password) {
+        Map<String,String> map=new HashMap();
         //密码需要客户端加密后传递
         try {
             UserDetails userDetails = loadUserByUsername(username);
@@ -74,22 +76,24 @@ public class UserServiceImpl implements UserService {
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            token = jwtTokenUtil.generateToken(userDetails);
+            String token = jwtTokenUtil.generateToken(userDetails);
+            map.put("header",token);
 //            updateLoginTimeByUsername(username);
 //            insertLoginLog(username);
         } catch (AuthenticationException e) {
             System.out.println("登录异常:{}"+e.getMessage());
+            map.put("0",e.getMessage());
         }
-        return token;
+        return map;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username){
+    public UserDetails loadUserByUsername(String username)throws UsernameNotFoundException{
         //获取用户信息
-        User admin = getUserByName(username);
-        if (admin != null) {
-            return new JwtUserDetailsService(admin);
+        User user = getUserByName(username);
+        if (user != null) {
+            return new JwtUserDetailsService(user);
         }
-        throw new UsernameNotFoundException("用户名或密码错误");
+        throw new UsernameNotFoundException("邮箱未注册");
     }
 }

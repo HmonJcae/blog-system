@@ -1,5 +1,6 @@
 package com.hmo.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,9 +14,12 @@ public class Blog implements Serializable {
     private String _id;
     @Indexed
     private String authorId;//用户ID
-    private String picUrl;//主题图片
-    private String title;//标题
-    private String content;//文本
+    @ApiModelProperty("主题图片")
+    private String picUrl;
+    @ApiModelProperty("标题")
+    private String title;
+    @ApiModelProperty("文本")
+    private String content;
     private Date createTime;
 
     public String get_id() {

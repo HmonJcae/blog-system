@@ -5,6 +5,7 @@ import com.hmo.dao.BlogDao;
 import com.hmo.entity.Blog;
 import com.hmo.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -38,7 +39,13 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> findAllById(String id) {
+        return blogDao.findByAuthorId(id);
+    }
+
+    @Override
     public Blog updata(Blog blog) {
+        blog.setCreateTime(new Date());
         return blogDao.save(blog);
     }
 

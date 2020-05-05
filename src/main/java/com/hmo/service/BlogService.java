@@ -10,6 +10,7 @@ public interface BlogService {
     Blog create(Blog blog);
     void delete(String Id);
     List<Blog> findAll();
+    List<Blog> findAllById(String id);
     Blog updata(Blog blog);
     MongoPage nextPage(Integer pageSize, Integer pageNum, String lastId);
 }

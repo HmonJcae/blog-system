@@ -25,7 +25,6 @@ public class UserController {
 
     @ApiOperation("用户注册")
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    @ApiImplicitParam(name = "user",value = "userName,passWord,/n用户名,密码")
     private CommonResult addUser(@RequestBody User user){
         //@RequestBody String userName,@RequestBody String passWord
         User u = userService.add(user.getUserName(),user.getPassWord());
@@ -35,8 +34,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户")
-    @RequestMapping(value ="/updata",method = RequestMethod.POST)
-    @ApiImplicitParam(name = "user",value = "passWord,/n密码")
+    @RequestMapping(value ="/updata",method = RequestMethod.PUT)
     private CommonResult updata(@RequestBody User user){
         User u = userService.updata(user);
         return CommonResult.success(u);
@@ -44,15 +42,13 @@ public class UserController {
 
     @ApiOperation("用户登录")
     @RequestMapping(value ="/login",method = RequestMethod.POST)
-    @ApiImplicitParam(name = "map",value = "userName,passWord,/n用户名,密码")
-    private CommonResult login(@RequestBody Map map){
-        String token = userService.login(map.get("userName").toString(),map.get("passWord").toString());
-        if (token==null)
-            return CommonResult.failed("");
-        Map<String,String> map1=new HashMap<>();
-        map1.put("head",head);
-        map1.put("header",token);
-        return CommonResult.success(map1);
+    private CommonResult login(@RequestBody User user){
+        Map<String,String> map = userService.login(user.getUserName(),user.getPassWord());
+        String s = map.get("header");
+        if (s==null)
+            return CommonResult.failed(map.get("0"));
+        map.put("head",head);
+        return CommonResult.success(map);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.hmo;
 
 import com.hmo.entity.Blog;
+import com.hmo.entity.User;
 import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,12 @@ class EdiApplicationTests {
 		if (integer==null){
 			System.out.println(1);
 		}
+	}
+
+	@Test
+	void d(){
+		User user=template.findOne(Query.query(Criteria.where("userName").is("qq@qq.ccc")), User.class);
+		System.out.println(user);
 	}
 
 }

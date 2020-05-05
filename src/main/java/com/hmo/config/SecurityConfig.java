@@ -48,7 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//创建政策,STATELESS无国籍无效的
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/blog/all","/","/blog/nextOrSkip",
+                .antMatchers(HttpMethod.GET,
+                        "/blog/","/","/blog/nextOrSkip",
+                        "/image/*",
                         "/*.html",
                         "/favicon.ico",
                         "/**/*.html",
