@@ -1,6 +1,7 @@
 package com.hmo.controller;
 
 import com.hmo.common.CommonResult;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,8 @@ import java.util.UUID;
 @RequestMapping("/image")
 public class ImageController {
 
-    private static String path="D://temp-rainy//";// 图片路径
+    @Value("${fileUpload}")
+    private String path;// 图片路径
 
     @PostMapping(value = "/")
     public CommonResult fileUpload(@RequestParam(value = "file") MultipartFile file) {
